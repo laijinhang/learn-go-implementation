@@ -1,0 +1,5 @@
+package work
+
+func BuildInit() {
+
+}
