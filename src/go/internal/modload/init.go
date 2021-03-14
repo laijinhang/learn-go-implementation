@@ -5,6 +5,7 @@ import (
 	"go/internal/base"
 	"go/internal/cfg"
 	"go/internal/internal/search"
+	"learn-go-implementation/src/go/internal/load"
 	"os"
 	"path/filepath"
 )
@@ -19,8 +20,12 @@ var (
 	CmdModInit bool // 运行 'go mod init' 命令
 )
 
+func init() {
+	load.ModInit = Init
+}
+
 func Init() {
-	// 已初始化
+	// 已初始化的话，直接返回
 	if initialized {
 		return
 	}
@@ -74,6 +79,7 @@ func Init() {
 	}
 
 	if CmdModInit {
+		// 运行 "go mod init": go.mod 将会在当前被创建在当前目录。
 		modRoot = cwd
 	} else {
 		modRoot = findModuleRoot(cwd)
@@ -89,7 +95,7 @@ func Init() {
 			fmt.Fprintf(os.Stderr, "go: warning: ignoring go.mod in system temp root %v\n", os.TempDir())
 		}
 	}
-
+	if cfg.M
 	// 现在处于module模式，安装挂钩编译到工作
 }
 

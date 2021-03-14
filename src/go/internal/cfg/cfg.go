@@ -13,9 +13,15 @@ import (
 
 var (
 	GOROOT = BuildContext.GOROOT
+	GOBIN  = Getenv("GOBIN")
 
 	BuildContext = build.Default
-	CmdName      string // "build", "install", "list", "mod tidy", etc
+
+	BuildV bool // -v flag
+
+	ModFile string // -modfile flag
+
+	CmdName string // "build", "install", "list", "mod tidy", etc
 )
 
 // An EnvVar is an environment variable Name=Value.

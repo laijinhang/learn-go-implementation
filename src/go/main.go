@@ -1,14 +1,16 @@
+// go 1.15.8
 package main
 
 import (
 	"flag"
 	"fmt"
-	"go/internal/base"
-	"go/internal/bug"
-	"go/internal/cfg"
-	"go/internal/envcmd"
-	"go/internal/help"
-	"go/internal/modload"
+	"learn-go-implementation/src/go/internal/base"
+	"learn-go-implementation/src/go/internal/bug"
+	"learn-go-implementation/src/go/internal/cfg"
+	"learn-go-implementation/src/go/internal/envcmd"
+	"learn-go-implementation/src/go/internal/help"
+	"learn-go-implementation/src/go/internal/modload"
+	"learn-go-implementation/src/go/internal/work"
 	"log"
 	"os"
 	"path/filepath"
@@ -19,6 +21,7 @@ import (
 func init() {
 	base.Go.Commands = []*base.Command{
 		bug.CmdBuf,
+		work.CmdBuild,
 	}
 }
 
@@ -79,7 +82,11 @@ func main() {
 	// 存储初始系统变量
 	cfg.OrigEnv = os.Environ()
 	cfg.CmdEnv = envcmd.MKEnv()
-	//cfg.CmdEnv =
+	for _, env := range cfg.CmdEnv {
+		if os.Getenv(env.Name) != env.Value {
+			os.Setenv(env.Name, env.Value)
+		}
+	}
 
 BigCmdLoop:
 	for bigCmd := base.Go; ; {
@@ -105,6 +112,7 @@ BigCmdLoop:
 		}
 	}
 }
+
 func init() {
 	base.Usage = mainUsage
 }

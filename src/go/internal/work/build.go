@@ -1,6 +1,11 @@
 package work
 
-import "go/internal/base"
+import (
+	"learn-go-implementation/src/go/internal/base"
+	"learn-go-implementation/src/go/internal/cfg"
+	"learn-go-implementation/src/go/internal/load"
+	"path/filepath"
+)
 
 var CmdBuild = &base.Command{
 	UsageLine: "go build [-o output] [-i] [build flags] [packages]",
@@ -141,9 +146,57 @@ const concurrentGCBackendCompilationEnabledByDefault = true
 func init() {
 	// 中断初始化周期
 	// break init cycle
+	CmdBuild.Run = runBuild
+	CmdInstall.Run = runInstall
 }
 
 // 运行编译
 func runBuild(cmd *base.Command, args []string) {
 
+}
+
+// 运行安装
+func runInstall(cmd *base.Command, args []string) {
+	BuildInit()
+	//InstallPackages(args, load.P)
+}
+
+func omitTestOnly(pkgs []*load.Package) []*load.Package {
+	var list []*load.Package
+	//for _, p := range pkgs {
+	//}
+	return list
+}
+
+// 安装包
+func InstallPackages(patterns []string, pkgs []*load.Package) {
+	// 如果环境变量GOBIN不为空，则GOBIN必须是绝对路径
+	if cfg.GOBIN != "" && !filepath.IsAbs(cfg.GOBIN) {
+		base.Fatalf("cannot install, GOBIN must be an absolute path")
+	}
+
+}
+
+var CmdInstall = &base.Command{
+	UsageLine: "go install [-i] [build flags] [packages]",
+	Short:     "compile and install packages and dependencies",
+	Long: `
+Install compiles and installs the packages named by the import paths.
+
+Executables are installed in the directory named by the GOBIN environment
+variable, which defaults to $GOPATH/bin or $HOME/go/bin if the GOPATH
+environment variable is not set. Executables in $GOROOT
+are installed in $GOROOT/bin or $GOTOOLDIR instead of $GOBIN.
+
+When module-aware mode is disabled, other packages are installed in the
+directory $GOPATH/pkg/$GOOS_$GOARCH. When module-aware mode is enabled,
+other packages are built and cached but not installed.
+
+The -i flag installs the dependencies of the named packages as well.
+
+For more about the build flags, see 'go help build'.
+For more about specifying packages, see 'go help packages'.
+
+See also: go build, go get, go clean.
+	`,
 }

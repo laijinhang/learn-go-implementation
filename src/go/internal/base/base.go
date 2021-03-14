@@ -1,6 +1,7 @@
 package base
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -23,7 +24,7 @@ type Command struct {
 	Long string
 
 	// Flag是特定于此命令的一组标志。
-
+	Flag flag.FlagSet
 	// 存储不同的Command打印内容
 	// bug
 	// build

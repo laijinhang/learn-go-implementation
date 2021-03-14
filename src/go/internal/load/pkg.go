@@ -12,6 +12,8 @@ var (
 type Package struct {
 	PackagePublic
 	Internal PackageInternal
+
+	GoFiles []string `json:",omitempty"`
 }
 
 type PackagePublic struct {
